@@ -11,7 +11,7 @@ class StoreTicketRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'status' => 'required|in:A,X,H,C',
+            'userId' => 'required|exists:users,id'
         ];
+    }
+
+    public function passedValidation()
+    {
+        return $this->merge([
+            'user_id' => $this->userId
+        ]);
     }
 }

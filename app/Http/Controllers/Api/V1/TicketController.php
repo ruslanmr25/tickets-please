@@ -9,10 +9,12 @@ use App\Http\Requests\Api\V1\StoreTicketRequest;
 use App\Http\Requests\Api\V1\UpdateTicketRequest;
 use App\Http\Resources\V1\TicketResource;
 use App\Models\Ticket;
+use App\Traits\ApiResponses;
 
 
 class TicketController extends Controller
 {
+    use ApiResponses;
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +30,10 @@ class TicketController extends Controller
      */
     public function store(StoreTicketRequest $request)
     {
-        //
+        $ticket = Ticket::create($request->all());
+
+
+        return new TicketResource($ticket);
     }
 
     /**
@@ -58,6 +63,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+        $this->success();
     }
 }
